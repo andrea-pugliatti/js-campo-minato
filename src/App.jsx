@@ -1,4 +1,5 @@
 /** biome-ignore-all lint/correctness/useExhaustiveDependencies: <Biome bug> */
+/** biome-ignore-all lint/suspicious/noArrayIndexKey: <Ignore for now> */
 import { useEffect, useState } from "react";
 
 function App() {
