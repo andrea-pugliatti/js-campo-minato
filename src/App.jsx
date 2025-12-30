@@ -75,6 +75,7 @@ function App() {
 					<button
 						type="button"
 						key={`cell-${index}`}
+						disabled={gameOver}
 						className={`cell ${current ? "active" : ""}`}
 						onClick={() => {
 							if (checkBomb(index)) {
