@@ -14,8 +14,22 @@ body {
 	margin: 0 auto;
 }
 
-.grid {
+.minesweeper {
 	margin: 1rem;
+	max-width: 300px;
+}
+
+.minesweeper-top {
+	padding: 1rem;
+	display: flex;
+	justify-content: space-between;
+}
+
+.face button {
+	padding: 0.2rem 0.5rem;
+}
+
+.grid {
 	display: flex;
 	flex-wrap: wrap;
 	max-width: 300px;

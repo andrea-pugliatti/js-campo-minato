@@ -29,6 +29,7 @@ function App() {
 		setMineCounters(newCounters);
 		setGrid(newGrid);
 		setBombs(bombs);
+		setGameOver(false);
 	}
 
 	const getRandomNumber = (min, max) =>
@@ -70,27 +71,38 @@ function App() {
 
 	return (
 		<div className="container">
-			<div className="grid">
-				{grid.map((current, index) => (
-					<button
-						type="button"
-						key={`cell-${index}`}
-						disabled={gameOver}
-						className={`cell ${current ? "active" : ""}`}
-						onClick={() => {
-							if (checkBomb(index)) {
-								console.log("Exploded", index, bombs);
-								setGameOver(true);
-							}
+			<div className="minesweeper">
+				<div className="minesweeper-top">
+					<div className="bombs-number">{/* Maybe Later */ "000"}</div>
+					<div className="face">
+						<button type="button" onClick={initializeGame}>
+							{gameOver ? "=(" : "=)"}
+						</button>
+					</div>
+					<div className="time">{/* Maybe Later */ "000"}</div>
+				</div>
+				<div className="grid">
+					{grid.map((current, index) => (
+						<button
+							type="button"
+							key={`cell-${index}`}
+							disabled={gameOver}
+							className={`cell ${current ? "active" : ""}`}
+							onClick={() => {
+								if (checkBomb(index)) {
+									console.log("Exploded", index, bombs);
+									setGameOver(true);
+								}
 
-							const newGrid = [...grid];
-							newGrid[index] = true;
-							setGrid(newGrid);
-						}}
-					>
-						{current && mineCounters[index]}
-					</button>
-				))}
+								const newGrid = [...grid];
+								newGrid[index] = true;
+								setGrid(newGrid);
+							}}
+						>
+							{current && mineCounters[index]}
+						</button>
+					))}
+				</div>
 			</div>
 		</div>
 	);
