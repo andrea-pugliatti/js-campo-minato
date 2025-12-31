@@ -2,6 +2,24 @@
 /** biome-ignore-all lint/suspicious/noArrayIndexKey: <Ignore for now> */
 import { useEffect, useState } from "react";
 
+import SmileFace from "./assets/img/faces/smileface.svg";
+import LostFace from "./assets/img/faces/lostface.svg";
+
+import CellUp from "./assets/img/cells/cellup.svg";
+import CellDown from "./assets/img/cells/celldown.svg";
+import CellMine from "./assets/img/cells/cellmine.svg";
+
+import Cell1 from "./assets/img/cells/cell1.svg";
+import Cell2 from "./assets/img/cells/cell2.svg";
+import Cell3 from "./assets/img/cells/cell3.svg";
+import Cell4 from "./assets/img/cells/cell4.svg";
+import Cell5 from "./assets/img/cells/cell5.svg";
+import Cell6 from "./assets/img/cells/cell6.svg";
+import Cell7 from "./assets/img/cells/cell7.svg";
+import Cell8 from "./assets/img/cells/cell8.svg";
+
+import Counter0 from "./assets/img/counter/counter0.svg";
+
 function App() {
 	const width = 10;
 	const height = 10;
@@ -62,6 +80,36 @@ function App() {
 		setMineCounters(newCounters);
 	}
 
+	function showCell(current, index) {
+		if (bombs.includes(index) && gameOver) {
+			return CellMine;
+		}
+
+		if (current) {
+			switch (mineCounters[index]) {
+				case 1:
+					return Cell1;
+				case 2:
+					return Cell2;
+				case 3:
+					return Cell3;
+				case 4:
+					return Cell4;
+				case 5:
+					return Cell5;
+				case 6:
+					return Cell6;
+				case 7:
+					return Cell7;
+				case 8:
+					return Cell8;
+				default:
+					return CellDown;
+			}
+		}
+		return CellUp;
+	}
+
 	useEffect(() => {
 		initializeGame();
 	}, []);
@@ -74,13 +122,25 @@ function App() {
 		<div className="container">
 			<div className="minesweeper">
 				<div className="minesweeper-top">
-					<div className="bombs-number">{/* Maybe Later */ "000"}</div>
+					<div className="bombs-number">
+						<img height={40} src={Counter0} alt="" />
+						<img height={40} src={Counter0} alt="" />
+						<img height={40} src={Counter0} alt="" />
+					</div>
 					<div className="face">
 						<button type="button" onClick={initializeGame}>
-							{gameOver ? "=(" : "=)"}
+							{gameOver ? (
+								<img height={40} src={LostFace} alt="smiley" />
+							) : (
+								<img height={40} src={SmileFace} alt="smiley" />
+							)}
 						</button>
 					</div>
-					<div className="time">{/* Maybe Later */ "000"}</div>
+					<div className="time">
+						<img height={40} src={Counter0} alt="" />
+						<img height={40} src={Counter0} alt="" />
+						<img height={40} src={Counter0} alt="" />
+					</div>
 				</div>
 				<div className="grid">
 					{grid.map((current, index) => (
@@ -100,7 +160,7 @@ function App() {
 								setGrid(newGrid);
 							}}
 						>
-							{current && mineCounters[index]}
+							{<img height={30} src={showCell(current, index)} alt="" />}
 						</button>
 					))}
 				</div>
