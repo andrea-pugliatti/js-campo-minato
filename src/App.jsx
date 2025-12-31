@@ -2,12 +2,12 @@
 /** biome-ignore-all lint/suspicious/noArrayIndexKey: <Ignore for now> */
 import { useEffect, useState } from "react";
 
-import SmileFace from "./assets/img/faces/smileface.svg";
 import LostFace from "./assets/img/faces/lostface.svg";
+import SmileFace from "./assets/img/faces/smileface.svg";
 
-import CellUp from "./assets/img/cells/cellup.svg";
 import CellDown from "./assets/img/cells/celldown.svg";
 import CellMine from "./assets/img/cells/cellmine.svg";
+import CellUp from "./assets/img/cells/cellup.svg";
 
 import Cell1 from "./assets/img/cells/cell1.svg";
 import Cell2 from "./assets/img/cells/cell2.svg";
@@ -78,6 +78,31 @@ function App() {
 		}
 
 		setMineCounters(newCounters);
+	}
+
+	function revealCells(row, col, grid) {
+		const index = row * width + col;
+
+		// If out of bounds
+		if (row < 0 || row >= height || col < 0 || col >= width) return;
+		// If already active
+		if (grid[index]) return;
+
+		// Reveal the current cell
+		grid[index] = true;
+
+		// If this cell has neighboring mines, stop
+		if (mineCounters[index] > 0) return;
+
+		// If it's a zero cell, visit all 8 neighbors
+		for (let offX = -1; offX <= 1; offX++) {
+			for (let offY = -1; offY <= 1; offY++) {
+				// Skip the current cell itself
+				if (offX === 0 && offY === 0) continue;
+
+				revealCells(row + offX, col + offY, grid);
+			}
+		}
 	}
 
 	function showCell(current, index) {
@@ -155,8 +180,11 @@ function App() {
 									setGameOver(true);
 								}
 
+								const row = Math.floor(index / width);
+								const col = index % width;
+
 								const newGrid = [...grid];
-								newGrid[index] = true;
+								revealCells(row, col, newGrid);
 								setGrid(newGrid);
 							}}
 						>
