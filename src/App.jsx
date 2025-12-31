@@ -6,6 +6,7 @@ import LostFace from "./assets/img/faces/lostface.svg";
 import SmileFace from "./assets/img/faces/smileface.svg";
 
 import CellDown from "./assets/img/cells/celldown.svg";
+import CellFlag from "./assets/img/cells/cellflag.svg";
 import CellMine from "./assets/img/cells/cellmine.svg";
 import CellUp from "./assets/img/cells/cellup.svg";
 
@@ -28,6 +29,7 @@ function App() {
 	const [grid, setGrid] = useState([]);
 	const [bombs, setBombs] = useState([]);
 	const [mineCounters, setMineCounters] = useState([]);
+	const [flagged, setFlagged] = useState([]);
 	const [gameOver, setGameOver] = useState(false);
 
 	function initializeGame() {
@@ -132,6 +134,11 @@ function App() {
 					return CellDown;
 			}
 		}
+
+		if (flagged.includes(index)) {
+			return CellFlag;
+		}
+
 		return CellUp;
 	}
 
@@ -186,6 +193,17 @@ function App() {
 								const newGrid = [...grid];
 								revealCells(row, col, newGrid);
 								setGrid(newGrid);
+							}}
+							onContextMenu={(e) => {
+								e.preventDefault();
+
+								if (flagged.includes(index)) {
+									const newArray = flagged.filter((item) => item === index);
+									setFlagged(newArray);
+								} else {
+									const newArray = [...flagged, index];
+									setFlagged(newArray);
+								}
 							}}
 						>
 							{<img height={30} src={showCell(current, index)} alt="" />}
