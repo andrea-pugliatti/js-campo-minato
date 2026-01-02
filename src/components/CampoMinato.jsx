@@ -74,7 +74,7 @@ function CampoMinato({ width, height, nBombs }) {
 		setSeconds(0);
 	}
 
-	function handleLeftClick() {
+	function handleLeftClick(index) {
 		if (checkBomb(index)) {
 			console.log("Exploded", index, bombs);
 			setGameOver(true);
@@ -91,7 +91,7 @@ function CampoMinato({ width, height, nBombs }) {
 		setGrid(newGrid);
 	}
 
-	function handleRightClick(e) {
+	function handleRightClick(e, index) {
 		e.preventDefault();
 
 		if (gameOver || win) return;
@@ -259,8 +259,8 @@ function CampoMinato({ width, height, nBombs }) {
 							key={`cell-${index}`}
 							disabled={gameOver}
 							className={`cell ${current ? "active" : ""}`}
-							onClick={handleLeftClick}
-							onContextMenu={handleRightClick}
+							onClick={() => handleLeftClick(index)}
+							onContextMenu={(e) => handleRightClick(e, index)}
 						>
 							{<img height={30} src={showCell(current, index)} alt="" />}
 						</button>
