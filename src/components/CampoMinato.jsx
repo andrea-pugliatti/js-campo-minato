@@ -37,7 +37,7 @@ function CampoMinato({ width, height, nBombs }) {
 		const bombs = [];
 
 		while (bombs.length < nBombs) {
-			const randomNum = getRandomNumber(0, width * height);
+			const randomNum = getRandomNumber(0, width * height - 1);
 			if (!bombs.includes(randomNum)) bombs.push(randomNum);
 		}
 
@@ -211,7 +211,7 @@ function CampoMinato({ width, height, nBombs }) {
 	}, [bombs]);
 
 	useEffect(() => {
-		if (flagged.length === nBombs) {
+		if (flagged.length >= nBombs) {
 			flagged.sort((a, b) => a - b);
 			bombs.sort((a, b) => a - b);
 
@@ -227,7 +227,7 @@ function CampoMinato({ width, height, nBombs }) {
 
 	return (
 		<div className="center">
-			<Confetti run={win} />
+			{win && <Confetti />}
 			<div className={`minesweeper ${getSize()}`}>
 				<div className="minesweeper-top">
 					<Counter number={nBombs - flagged.length} />
