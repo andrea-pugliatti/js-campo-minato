@@ -49,7 +49,7 @@ function CampoMinato({ width, height, nBombs }) {
 		}
 
 		while (bombs.length < nBombs) {
-			const randomNum = getRandomNumber(0, 99);
+			const randomNum = getRandomNumber(0, width * height);
 			if (!bombs.includes(randomNum)) bombs.push(randomNum);
 		}
 
@@ -274,7 +274,7 @@ function CampoMinato({ width, height, nBombs }) {
 								e.preventDefault();
 
 								if (flagged.includes(index)) {
-									const newArray = flagged.filter((item) => item === index);
+									const newArray = flagged.filter((item) => item !== index);
 									setFlagged(newArray);
 								} else {
 									const newArray = [...flagged, index];
