@@ -28,17 +28,13 @@ function CampoMinato({ width, height, nBombs }) {
 	const [gameOver, setGameOver] = useState(false);
 	const [win, setWin] = useState(false);
 	const [face, setFace] = useState("smileUp");
+	const [timer, setTimer] = useState();
 	const [seconds, setSeconds] = useState(0);
 
 	function initializeGame() {
-		const newGrid = [];
-		const newCounters = [];
+		const newGrid = Array(width * height).fill(false);
+		const newCounters = Array(width * height).fill(0);
 		const bombs = [];
-
-		for (let i = 0; i < width * height; i++) {
-			newGrid.push(false);
-			newCounters.push(0);
-		}
 
 		while (bombs.length < nBombs) {
 			const randomNum = getRandomNumber(0, width * height);
@@ -56,10 +52,15 @@ function CampoMinato({ width, height, nBombs }) {
 	}
 
 	function handleLeftClick(index) {
+		if (gameOver || win) return;
+
+		if (!timer) toggleTimer();
+
 		if (checkBomb(index)) {
 			console.log("Exploded", index, bombs);
 			setGameOver(true);
 			setFace("lost");
+			toggleTimer();
 			return;
 		}
 
@@ -189,13 +190,20 @@ function CampoMinato({ width, height, nBombs }) {
 		}
 	};
 
+	function toggleTimer() {
+		if (timer) {
+			clearInterval(timer);
+			setTimer(undefined);
+		} else {
+			const interval = setInterval(() => {
+				setSeconds((prev) => prev + 1);
+			}, 1000);
+			setTimer(interval);
+		}
+	}
+
 	useEffect(() => {
 		initializeGame();
-		const interval = setInterval(() => {
-			setSeconds((prev) => prev + 1);
-		}, 1000);
-
-		return () => clearInterval(interval);
 	}, []);
 
 	useEffect(() => {
@@ -211,6 +219,7 @@ function CampoMinato({ width, height, nBombs }) {
 				if (flagged[i] !== bombs[i]) return;
 			}
 
+			toggleTimer();
 			setFace("win");
 			setWin(true);
 		}
