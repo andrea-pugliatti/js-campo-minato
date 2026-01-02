@@ -70,7 +70,39 @@ function CampoMinato({ width, height, nBombs }) {
 		setFlagged([]);
 		setGameOver(false);
 		setFace("smileUp");
+		setWin(false);
 		setSeconds(0);
+	}
+
+	function handleLeftClick() {
+		if (checkBomb(index)) {
+			console.log("Exploded", index, bombs);
+			setGameOver(true);
+			setFace("lost");
+			return;
+		}
+
+		setFace("smileUp");
+		const row = Math.floor(index / width);
+		const col = index % width;
+
+		const newGrid = [...grid];
+		revealCells(row, col, newGrid);
+		setGrid(newGrid);
+	}
+
+	function handleRightClick(e) {
+		e.preventDefault();
+
+		if (gameOver || win) return;
+
+		if (flagged.includes(index)) {
+			const newArray = flagged.filter((item) => item !== index);
+			setFlagged(newArray);
+		} else {
+			const newArray = [...flagged, index];
+			setFlagged(newArray);
+		}
 	}
 
 	const getRandomNumber = (min, max) =>
@@ -227,35 +259,8 @@ function CampoMinato({ width, height, nBombs }) {
 							key={`cell-${index}`}
 							disabled={gameOver}
 							className={`cell ${current ? "active" : ""}`}
-							onClick={() => {
-								if (checkBomb(index)) {
-									console.log("Exploded", index, bombs);
-									setGameOver(true);
-									setFace("lost");
-									return;
-								}
-
-								setFace("smileUp");
-								const row = Math.floor(index / width);
-								const col = index % width;
-
-								const newGrid = [...grid];
-								revealCells(row, col, newGrid);
-								setGrid(newGrid);
-							}}
-							onContextMenu={(e) => {
-								e.preventDefault();
-
-								if (gameOver || win) return;
-
-								if (flagged.includes(index)) {
-									const newArray = flagged.filter((item) => item !== index);
-									setFlagged(newArray);
-								} else {
-									const newArray = [...flagged, index];
-									setFlagged(newArray);
-								}
-							}}
+							onClick={handleLeftClick}
+							onContextMenu={handleRightClick}
 						>
 							{<img height={30} src={showCell(current, index)} alt="" />}
 						</button>
