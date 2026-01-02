@@ -30,6 +30,7 @@ function CampoMinato({ width, height, nBombs }) {
 	const [face, setFace] = useState("smileUp");
 	const [timer, setTimer] = useState();
 	const [seconds, setSeconds] = useState(0);
+	const [touchTimer, setTouchTimer] = useState();
 
 	function initializeGame() {
 		const newGrid = Array(width * height).fill(false);
@@ -52,6 +53,21 @@ function CampoMinato({ width, height, nBombs }) {
 		setWin(false);
 		setSeconds(0);
 	}
+
+	const handleTouchStart = (e, index) => {
+		// Start a timer for 500ms (standard long-press duration)
+		const timer = setTimeout(() => {
+			handleRightClick(e, index);
+		}, 500);
+		setTouchTimer(timer);
+	};
+
+	const handleTouchEnd = () => {
+		// If the user lifts their finger before 500ms, cancel the timer
+		if (touchTimer) {
+			clearTimeout(touchTimer);
+		}
+	};
 
 	function handleLeftClick(index) {
 		if (gameOver || win) return;
@@ -76,7 +92,7 @@ function CampoMinato({ width, height, nBombs }) {
 	}
 
 	function handleRightClick(e, index) {
-		e.preventDefault();
+		if (e.cancelable) e.preventDefault();
 
 		if (gameOver || win) return;
 
@@ -247,6 +263,10 @@ function CampoMinato({ width, height, nBombs }) {
 							className={`cell ${current ? "active" : ""}`}
 							onClick={() => handleLeftClick(index)}
 							onContextMenu={(e) => handleRightClick(e, index)}
+							onTouchStart={(e) => handleTouchStart(e, index)}
+							onTouchEnd={() => handleTouchEnd()}
+							onTouchMove={() => handleTouchEnd()}
+							onTouchCancel={() => handleTouchEnd()}
 						>
 							{<img height={30} src={showCell(current, index)} alt="" />}
 						</button>
