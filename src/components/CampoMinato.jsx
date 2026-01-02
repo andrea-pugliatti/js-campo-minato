@@ -32,6 +32,7 @@ function CampoMinato({ width, height, nBombs }) {
 	const [gameOver, setGameOver] = useState(false);
 	const [win, setWin] = useState(false);
 	const [face, setFace] = useState("smileUp");
+	const [seconds, setSeconds] = useState(0);
 
 	function getFace() {
 		switch (face) {
@@ -69,6 +70,7 @@ function CampoMinato({ width, height, nBombs }) {
 		setFlagged([]);
 		setGameOver(false);
 		setFace("smileUp");
+		setSeconds(0);
 	}
 
 	const getRandomNumber = (min, max) =>
@@ -176,6 +178,9 @@ function CampoMinato({ width, height, nBombs }) {
 
 	useEffect(() => {
 		initializeGame();
+		// setInterval(() => {
+		// 	setSeconds(seconds + 1);
+		// }, 1000);
 	}, []);
 
 	useEffect(() => {
@@ -186,9 +191,11 @@ function CampoMinato({ width, height, nBombs }) {
 		if (flagged.length === nBombs) {
 			flagged.sort((a, b) => a - b);
 			bombs.sort((a, b) => a - b);
+
 			for (let i = 0; i < flagged.length; i++) {
 				if (flagged[i] !== bombs[i]) return;
 			}
+
 			setFace("win");
 			setWin(true);
 		}
@@ -208,7 +215,7 @@ function CampoMinato({ width, height, nBombs }) {
 						</button>
 					</div>
 					<div className="time">
-						<Counter number={0} />
+						<Counter number={seconds} />
 					</div>
 				</div>
 				<div className="grid">
@@ -236,6 +243,8 @@ function CampoMinato({ width, height, nBombs }) {
 							}}
 							onContextMenu={(e) => {
 								e.preventDefault();
+
+								if (gameOver || win) return;
 
 								if (flagged.includes(index)) {
 									const newArray = flagged.filter((item) => item !== index);
