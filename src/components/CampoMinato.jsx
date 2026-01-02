@@ -25,8 +25,8 @@ import Cell8 from "../assets/img/cells/cell8.svg";
 
 function CampoMinato({ width, height, nBombs }) {
 	const [grid, setGrid] = useState([]);
-	const [bombs, setBombs] = useState([]);
 	const [mineCounters, setMineCounters] = useState([]);
+	const [bombs, setBombs] = useState([]);
 	const [flagged, setFlagged] = useState([]);
 	const [gameOver, setGameOver] = useState(false);
 	const [face, setFace] = useState("smileUp");
@@ -159,14 +159,6 @@ function CampoMinato({ width, height, nBombs }) {
 		return CellUp;
 	}
 
-	useEffect(() => {
-		initializeGame();
-	}, []);
-
-	useEffect(() => {
-		updateCells();
-	}, [bombs]);
-
 	const getSize = () => {
 		switch (width) {
 			case 9:
@@ -179,6 +171,24 @@ function CampoMinato({ width, height, nBombs }) {
 				return "";
 		}
 	};
+
+	useEffect(() => {
+		initializeGame();
+	}, []);
+
+	useEffect(() => {
+		updateCells();
+	}, [bombs]);
+
+	useEffect(() => {
+		if (flagged.length === nBombs) {
+			for (let i = 0; i < flagged.length; i++) {
+				if (flagged[i] !== bombs[i]) return;
+			}
+			setFace("win");
+			alert("YOU WON!");
+		}
+	}, [grid, flagged]);
 
 	return (
 		<div className="center">
