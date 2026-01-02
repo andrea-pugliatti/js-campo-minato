@@ -178,9 +178,11 @@ function CampoMinato({ width, height, nBombs }) {
 
 	useEffect(() => {
 		initializeGame();
-		// setInterval(() => {
-		// 	setSeconds(seconds + 1);
-		// }, 1000);
+		const interval = setInterval(() => {
+			setSeconds((prev) => prev + 1);
+		}, 1000);
+
+		return () => clearInterval(interval);
 	}, []);
 
 	useEffect(() => {
