@@ -2,6 +2,7 @@
 /** biome-ignore-all lint/suspicious/noArrayIndexKey: <Ignore for now> */
 import { useEffect, useState } from "react";
 
+import Confetti from "react-confetti";
 import Counter from "./Counter";
 
 import LostFace from "../assets/img/faces/lostface.svg";
@@ -29,6 +30,7 @@ function CampoMinato({ width, height, nBombs }) {
 	const [bombs, setBombs] = useState([]);
 	const [flagged, setFlagged] = useState([]);
 	const [gameOver, setGameOver] = useState(false);
+	const [win, setWin] = useState(false);
 	const [face, setFace] = useState("smileUp");
 
 	function getFace() {
@@ -182,16 +184,19 @@ function CampoMinato({ width, height, nBombs }) {
 
 	useEffect(() => {
 		if (flagged.length === nBombs) {
+			flagged.sort((a, b) => a - b);
+			bombs.sort((a, b) => a - b);
 			for (let i = 0; i < flagged.length; i++) {
 				if (flagged[i] !== bombs[i]) return;
 			}
 			setFace("win");
-			alert("YOU WON!");
+			setWin(true);
 		}
 	}, [grid, flagged]);
 
 	return (
 		<div className="center">
+			<Confetti run={win} />
 			<div className={`minesweeper ${getSize()}`}>
 				<div className="minesweeper-top">
 					<div className="bombs-number">
