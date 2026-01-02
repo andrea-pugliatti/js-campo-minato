@@ -7,7 +7,10 @@
 body {
 	font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
 	background-color: rgb(33, 127, 127);
+	user-select: none;
 	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-webkit-tap-highlight-color: transparent;
 }
 
 h1 {
@@ -29,13 +32,13 @@ h1 {
 }
 
 .center {
-	display: flex;
-	justify-content: center;
+	width: 100%;
 }
 
 .menu {
 	margin-top: 2rem;
 	display: flex;
+	flex-direction: column;
 	justify-content: center;
 }
 
@@ -56,7 +59,7 @@ h1 {
 }
 
 .minesweeper {
-	margin: 1rem;
+	margin: 1rem auto;
 	padding: 10px;
 	background-color: #c0c0c0;
 	border: 5px solid;
@@ -69,15 +72,15 @@ h1 {
 }
 
 .small {
-	max-width: calc(270px + 20px + 20px);
+	width: calc(270px + 20px + 20px);
 }
 
 .medium {
-	max-width: calc(480px + 20px + 20px);
+	width: calc(480px + 20px + 20px);
 }
 
 .large {
-	max-width: calc(900px + 20px + 20px);
+	width: calc(900px + 20px + 20px);
 }
 
 .minesweeper-top {

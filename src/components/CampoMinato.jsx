@@ -80,6 +80,8 @@ function CampoMinato({ width, height, nBombs }) {
 
 		if (gameOver || win) return;
 
+		if (grid[index]) return;
+
 		if (flagged.includes(index)) {
 			const newArray = flagged.filter((item) => item !== index);
 			setFlagged(newArray);
