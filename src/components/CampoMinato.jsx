@@ -41,6 +41,8 @@ function CampoMinato({ width, height, nBombs }) {
 			if (!bombs.includes(randomNum)) bombs.push(randomNum);
 		}
 
+		if (timer) toggleTimer();
+
 		setMineCounters(newCounters);
 		setGrid(newGrid);
 		setBombs(bombs);
