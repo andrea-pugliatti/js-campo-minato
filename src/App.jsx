@@ -8,7 +8,7 @@ function App() {
 	const [choice, setChoice] = useState(null);
 
 	const difficulties = [
-		{ width: 9, height: 9, nBombs: 3 },
+		{ width: 9, height: 9, nBombs: 10 },
 		{ width: 16, height: 16, nBombs: 40 },
 		{ width: 30, height: 16, nBombs: 99 },
 	];
