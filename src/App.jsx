@@ -1,5 +1,3 @@
-/** biome-ignore-all lint/correctness/useExhaustiveDependencies: <Biome bug> */
-/** biome-ignore-all lint/suspicious/noArrayIndexKey: <Ignore for now> */
 import { useState } from "react";
 
 import CampoMinato from "./components/CampoMinato";

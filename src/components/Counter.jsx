@@ -12,7 +12,7 @@ import Counter8 from "../assets/img/counter/counter8.svg";
 import Counter9 from "../assets/img/counter/counter9.svg";
 
 export default function Counter({ number }) {
-	function showTime(number) {
+	function showCounter(number) {
 		const string = number.toString().trim();
 		const array = [];
 
@@ -63,7 +63,7 @@ export default function Counter({ number }) {
 
 	return (
 		<div className="counter">
-			{showTime(number).map((current, index) => {
+			{showCounter(number).map((current, index) => {
 				return <img key={`time-${index}`} height={40} src={current} alt="" />;
 			})}
 		</div>

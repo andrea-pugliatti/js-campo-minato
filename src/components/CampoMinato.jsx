@@ -20,15 +20,18 @@ function CampoMinato({ width, height, nBombs }) {
 	const [touchTimer, setTouchTimer] = useState();
 
 	function initializeGame() {
+		// Initialize new arrays for the displayed grid and counters
 		const newGrid = Array(width * height).fill(false);
 		const newCounters = Array(width * height).fill(0);
 		const bombs = [];
 
+		// Fill the bombs array with unique indexes
 		while (bombs.length < nBombs) {
 			const randomNum = getRandomNumber(0, width * height - 1);
 			if (!bombs.includes(randomNum)) bombs.push(randomNum);
 		}
 
+		// Stop timer if running (for refreshing while the game is not over)
 		if (timer) toggleTimer();
 
 		setMineCounters(newCounters);
@@ -44,6 +47,7 @@ function CampoMinato({ width, height, nBombs }) {
 	const handleTouchStart = (e, index) => {
 		// Start a timer for 500ms (standard long-press duration)
 		const timer = setTimeout(() => {
+			// Actually call the function
 			handleRightClick(e, index);
 		}, 500);
 		setTouchTimer(timer);
@@ -57,19 +61,25 @@ function CampoMinato({ width, height, nBombs }) {
 	};
 
 	function handleLeftClick(index) {
+		// Disable click on game end
 		if (gameOver || win) return;
 
+		// Toggle the timer on game start
 		if (!timer) toggleTimer();
 
-		if (checkBomb(index)) {
-			console.log("Exploded", index, bombs);
+		// If the current index is a bomb, game over
+		if (bombs.includes(index)) {
+			// console.log("Exploded", index, bombs);
 			setGameOver(true);
 			setFace("lost");
 			toggleTimer();
 			return;
 		}
 
+		// Reset smiley face
 		setFace("smileUp");
+
+		// Reveal cells and set the grid
 		const row = Math.floor(index / width);
 		const col = index % width;
 
@@ -79,12 +89,16 @@ function CampoMinato({ width, height, nBombs }) {
 	}
 
 	function handleRightClick(e, index) {
+		// Prevent opening context menu
 		if (e.cancelable) e.preventDefault();
 
+		// Disable click on game end
 		if (gameOver || win) return;
 
+		// Can't flag an already active cell
 		if (grid[index]) return;
 
+		// If already flagged, unflag
 		if (flagged.includes(index)) {
 			const newArray = flagged.filter((item) => item !== index);
 			setFlagged(newArray);
@@ -97,24 +111,31 @@ function CampoMinato({ width, height, nBombs }) {
 	const getRandomNumber = (min, max) =>
 		Math.floor(Math.random() * (max - min + 1)) + min;
 
-	const checkBomb = (index) => bombs.includes(index);
-
 	function updateCells() {
+		// Initialize new array of counters
 		const newCounters = Array(width * height).fill(0);
 
+		// For every bomb
 		for (const bomb of bombs) {
 			const row = Math.floor(bomb / width);
 			const col = bomb % width;
 
+			/**
+			 * Update the count of the cells around the bomb
+			 * row -1:	-1 0 +1
+			 * row 0:		-1 * +1
+			 * row +1:	-1 0 +1
+			 */
 			for (let r = row - 1; r <= row + 1; r++) {
 				for (let c = col - 1; c <= col + 1; c++) {
 					const index = r * width + c;
 
-					// If out of bounds
+					// Don't update if out of bounds
 					if (r < 0 || r >= height || c < 0 || c >= width) continue;
-					// If it's the bomb itself
+					// Don't update if it's the bomb itself
 					if (index === bomb || bombs.includes(index)) continue;
 
+					// Update the count
 					newCounters[index] += 1;
 				}
 			}
@@ -126,16 +147,17 @@ function CampoMinato({ width, height, nBombs }) {
 	function revealCells(row, col, grid) {
 		const index = row * width + col;
 
-		// If out of bounds
+		// Don't reveal if out of bounds
 		if (row < 0 || row >= height || col < 0 || col >= width) return;
-		// If already active
+		// Don't reveal if already active
 		if (grid[index]) return;
 
 		// Reveal the current cell
 		grid[index] = true;
 
-		// If this cell has neighboring mines, stop
+		// If the current cell has neighboring mines, stop the recursion
 		if (mineCounters[index] > 0) return;
+		// Set the face to 😯
 		setFace("click");
 
 		// If it's a zero cell, visit all 8 neighbors
@@ -144,6 +166,7 @@ function CampoMinato({ width, height, nBombs }) {
 				// Skip the current cell itself
 				if (offX === 0 && offY === 0) continue;
 
+				// Recursevely visit the neighbors
 				revealCells(row + offX, col + offY, grid);
 			}
 		}
@@ -164,9 +187,11 @@ function CampoMinato({ width, height, nBombs }) {
 
 	function toggleTimer() {
 		if (timer) {
+			// If the timer exists clear it
 			clearInterval(timer);
 			setTimer(undefined);
 		} else {
+			// Otherwise create a new one
 			const interval = setInterval(() => {
 				setSeconds((prev) => prev + 1);
 			}, 1000);
@@ -183,10 +208,13 @@ function CampoMinato({ width, height, nBombs }) {
 	}, [bombs]);
 
 	useEffect(() => {
+		// Win condition
 		if (flagged.length >= nBombs) {
+			// First sort the arrays
 			flagged.sort((a, b) => a - b);
 			bombs.sort((a, b) => a - b);
 
+			// Check if any element is different
 			for (let i = 0; i < flagged.length; i++) {
 				if (flagged[i] !== bombs[i]) return;
 			}
