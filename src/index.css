@@ -115,12 +115,7 @@ h1 {
 		cursor: pointer;
 	}
 
-	img {
-		display: block;
-	}
-
 	&:active img {
-		/* border: 2px solid black; */
 		content: url("./assets/img/faces/smilefacedown.svg");
 	}
 }

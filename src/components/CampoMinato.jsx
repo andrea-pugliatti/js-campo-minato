@@ -4,11 +4,7 @@ import { useEffect, useState } from "react";
 
 import Confetti from "react-confetti";
 import Counter from "./Counter";
-
-import LostFace from "../assets/img/faces/lostface.svg";
-import SmileFace from "../assets/img/faces/smileface.svg";
-import WinFace from "../assets/img/faces/winface.svg";
-import ClickFace from "../assets/img/faces/clickface.svg";
+import SmileyFace from "./SmileyFace";
 
 import CellDown from "../assets/img/cells/celldown.svg";
 import CellFlag from "../assets/img/cells/cellflag.svg";
@@ -33,21 +29,6 @@ function CampoMinato({ width, height, nBombs }) {
 	const [win, setWin] = useState(false);
 	const [face, setFace] = useState("smileUp");
 	const [seconds, setSeconds] = useState(0);
-
-	function getFace() {
-		switch (face) {
-			case "smileUp":
-				return SmileFace;
-			case "win":
-				return WinFace;
-			case "lost":
-				return LostFace;
-			case "click":
-				return ClickFace;
-			default:
-				return SmileFace;
-		}
-	}
 
 	function initializeGame() {
 		const newGrid = [];
@@ -241,11 +222,7 @@ function CampoMinato({ width, height, nBombs }) {
 			<div className={`minesweeper ${getSize()}`}>
 				<div className="minesweeper-top">
 					<Counter number={nBombs - flagged.length} />
-					<div className="face">
-						<button type="button" onClick={initializeGame}>
-							{<img height={40} src={getFace()} alt="smiley" />}
-						</button>
-					</div>
+					<SmileyFace face={face} handleClick={initializeGame} />
 					<Counter number={seconds} />
 				</div>
 				<div className="grid">
