@@ -240,17 +240,13 @@ function CampoMinato({ width, height, nBombs }) {
 			<Confetti run={win} />
 			<div className={`minesweeper ${getSize()}`}>
 				<div className="minesweeper-top">
-					<div className="bombs-number">
-						<Counter number={nBombs - flagged.length} />
-					</div>
+					<Counter number={nBombs - flagged.length} />
 					<div className="face">
 						<button type="button" onClick={initializeGame}>
 							{<img height={40} src={getFace()} alt="smiley" />}
 						</button>
 					</div>
-					<div className="time">
-						<Counter number={seconds} />
-					</div>
+					<Counter number={seconds} />
 				</div>
 				<div className="grid">
 					{grid.map((current, index) => (

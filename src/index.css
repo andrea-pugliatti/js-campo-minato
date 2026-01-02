@@ -92,8 +92,7 @@ h1 {
 	border-top-color: #7b7b7b;
 	border-right-color: #ffffff;
 
-	.time,
-	.bombs-number {
+	.counter {
 		display: flex;
 		border: 1px solid;
 		border-bottom-color: #ffffff;

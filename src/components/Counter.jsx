@@ -62,7 +62,7 @@ export default function Counter({ number }) {
 	}
 
 	return (
-		<div className="time">
+		<div className="counter">
 			{showTime(number).map((current, index) => {
 				return <img key={`time-${index}`} height={40} src={current} alt="" />;
 			})}
