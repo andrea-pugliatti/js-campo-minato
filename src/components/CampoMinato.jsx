@@ -72,7 +72,7 @@ function CampoMinato({ width, height, nBombs }) {
 			// console.log("Exploded", index, bombs);
 			setGameOver(true);
 			setFace("lost");
-			toggleTimer();
+			if (timer) toggleTimer();
 			return;
 		}
 
