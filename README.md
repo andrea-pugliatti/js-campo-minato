@@ -1,6 +1,8 @@
 # Campo Minato
 
-## Esercizio
+[Provalo qui!](https://js-campo-minato.vercel.app/) :)
+
+## Esercizio
 
 ### Milestone 1
 
@@ -17,7 +19,7 @@ Nota: le bombe non devono essere visibili all’utente all’inizio del gioco
 ### Milestone 3
 
 Per ogni cella senza bomba, calcoliamo il numero di bombe adiacenti, come nel classico Campo Minato / Campo Fiorito.
-- **Una bomba è considerata adiacente se si trova: sopra, sotto, a destra, a sinistra o in diagonale
+- Una bomba è considerata adiacente se si trova: sopra, sotto, a destra, a sinistra o in diagonale
 - Ogni cella deve “conoscere” quante bombe ha intorno
 - Il numero di bombe adiacenti verrà mostrato solo al click sulla cella
 
